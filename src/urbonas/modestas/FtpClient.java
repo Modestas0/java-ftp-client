@@ -20,6 +20,42 @@ public class FtpClient {
         return readResponse();
     }
 
+    public FtpResponse user(String username) throws IOException {
+        return execute("USER " + username);
+    }
+
+    public FtpResponse pass(String password) throws IOException {
+        return execute("PASS " + password);
+    }
+
+    public FtpResponse syst() throws IOException {
+        return execute("SYST");
+    }
+
+    public FtpResponse cwd(String directory) throws IOException {
+        return execute("CWD " + directory);
+    }
+
+    public FtpResponse pwd() throws IOException {
+        return execute("PWD");
+    }
+
+    public FtpResponse mkd(String directory) throws IOException {
+        return execute("MKD " + directory);
+    }
+
+    public FtpResponse rmd(String directory) throws IOException {
+        return execute("RMD " + directory);
+    }
+
+    public FtpResponse size(String file) throws IOException {
+        return execute("SIZE " + file);
+    }
+
+    public FtpResponse quit() throws IOException {
+        return execute("QUIT");
+    }
+
     public FtpResponse execute(String command) throws IOException {
         writer.write(command + "\r\n");
         writer.flush();
