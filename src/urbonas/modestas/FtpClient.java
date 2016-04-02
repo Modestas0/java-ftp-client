@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FtpClient {
     private final Socket socket;
@@ -87,5 +89,21 @@ public class FtpClient {
         } while(!completed);
 
         return new FtpResponse(status, messages);
+    }
+
+    private FtpResponseWithSocket getPassiveSocket() throws IOException {
+        FtpResponse response = execute("PASV");
+        if(response.getStatus() != 227) {
+            return new FtpResponseWithSocket(response, null);
+        }
+
+        Pattern pattern = Pattern.compile("([0-9]+),([0-9]+),([0-9]+),([0-9]+),([0-9]+),([0-9]+)");
+        Matcher matcher = pattern.matcher(response.getJoinedMessages());
+        String ip = matcher.group(1) + "." + matcher.group(2) + "."
+                + matcher.group(3) + "." + matcher.group(4);
+
+        int port = Integer.valueOf(matcher.group(5)) * 0x100 + Integer.valueOf(matcher.group(6));
+        Socket socket = new Socket(ip, port);
+        return new FtpResponseWithSocket(response, socket);
     }
 }
