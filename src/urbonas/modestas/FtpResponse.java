@@ -22,4 +22,9 @@ public class FtpResponse {
     public String getJoinedMessages() {
         return String.join("\n", messages);
     }
+
+    @Override
+    public String toString() {
+        return "FtpResponse { " + status + ": " + getJoinedMessages() + " }";
+    }
 }
