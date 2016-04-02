@@ -9,4 +9,8 @@ public class FtpTransferResponse extends FtpResponse {
         super(status, messages);
         this.data = data;
     }
+
+    public byte[] getData() {
+        return data;
+    }
 }
