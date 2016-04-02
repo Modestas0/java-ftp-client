@@ -7,8 +7,7 @@ public class FtpResponseWithSocket extends FtpResponse {
     private final Socket socket;
 
     public FtpResponseWithSocket(FtpResponse response, Socket socket) {
-        super(response.getStatus(), response.getMessages());
-        this.socket = socket;
+        this(response.getStatus(), response.getMessages(), socket);
     }
     public FtpResponseWithSocket(int status, List<String> messages, Socket socket) {
         super(status, messages);
