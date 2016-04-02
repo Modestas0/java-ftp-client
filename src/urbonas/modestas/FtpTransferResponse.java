@@ -1,5 +1,8 @@
 package urbonas.modestas;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.List;
 
 public class FtpTransferResponse extends FtpResponse {
@@ -17,5 +20,16 @@ public class FtpTransferResponse extends FtpResponse {
 
     public byte[] getData() {
         return data;
+    }
+
+    @Override
+    public String toString() {
+        String dataAsStr;
+        try {
+            dataAsStr = new String(data, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            dataAsStr = new String(data, Charset.defaultCharset());
+        }
+        return "FtpTransferResponse {" + super.toString() + ", " + dataAsStr + " }";
     }
 }

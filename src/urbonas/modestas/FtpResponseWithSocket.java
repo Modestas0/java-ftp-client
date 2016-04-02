@@ -18,4 +18,9 @@ public class FtpResponseWithSocket extends FtpResponse {
     public Socket getSocket() {
         return socket;
     }
+
+    @Override
+    public String toString() {
+        return "FtpResponseWithSocket { " + super.toString() + ", " + socket + " }";
+    }
 }
