@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2084230-2d3b-49aa-a5d9-76d79bf6da07" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/urbonas/modestas/FtpClient.java" afterPath="$PROJECT_DIR$/src/urbonas/modestas/FtpClient.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/urbonas/modestas/FtpTransferResponse.java" />
     </list>
     <ignored path="FtpClient.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,14 +48,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FtpClient.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="FtpClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/urbonas/modestas/FtpClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="31" column="31" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="31" />
+            <state relative-caret-position="136">
+              <caret line="52" column="5" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FtpTransferResponse.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/urbonas/modestas/FtpTransferResponse.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="144">
+              <caret line="8" column="32" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -105,6 +114,7 @@
         <option value="$PROJECT_DIR$/src/urbonas/modestas/FtpResponse.java" />
         <option value="$PROJECT_DIR$/src/urbonas/modestas/Main.java" />
         <option value="$PROJECT_DIR$/src/urbonas/modestas/FtpClient.java" />
+        <option value="$PROJECT_DIR$/src/urbonas/modestas/FtpTransferResponse.java" />
       </list>
     </option>
   </component>
@@ -115,9 +125,9 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="41" />
-    <option name="y" value="424" />
+    <option name="y" value="24" />
     <option name="width" value="1325" />
-    <option name="height" value="344" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -676,15 +686,15 @@
       <updated>1459584560959</updated>
       <workItem from="1459584564667" duration="2727000" />
       <workItem from="1459613373865" duration="1346000" />
-      <workItem from="1459615071482" duration="9315000" />
+      <workItem from="1459615071482" duration="9640000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13388000" />
+    <option name="totallyTimeSpent" value="13713000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="41" y="424" width="1325" height="344" extended-state="2" />
+    <frame x="41" y="24" width="1325" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -845,11 +855,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/urbonas/modestas/FtpClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="31" column="31" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="31" />
+        <state relative-caret-position="136">
+          <caret line="52" column="5" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/urbonas/modestas/FtpTransferResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="8" column="32" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
+          <folding />
         </state>
       </provider>
     </entry>
