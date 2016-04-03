@@ -62,45 +62,45 @@ public class FtpClient {
         return execute("SIZE " + file);
     }
 
-    public FtpTransferResponse list() throws IOException {
+    public FtpResponse list(OutputStream output) throws IOException {
         FtpResponseWithSocket pasvResponse = getPassiveSocket();
         Socket socket = pasvResponse.getSocket();
         if(socket == null) {
-            return new FtpTransferResponse(pasvResponse, null);
+            return pasvResponse;
         }
 
         FtpResponse response = execute("LIST");
         if(response.getStatus() != 150) {
-            return new FtpTransferResponse(response, null);
+            return response;
         }
 
-        byte[] output = readFromSocket(socket);
+        readFromSocket(socket, output);
 
         response = readResponse();
-        return new FtpTransferResponse(response, output);
+        return response;
     }
 
-    public FtpTransferResponse retr(String filename) throws IOException {
+    public FtpResponse retr(String filename, OutputStream output) throws IOException {
         FtpResponse typeResponse = execute("TYPE I");
         if(typeResponse.getStatus() != 200) {
-            return new FtpTransferResponse(typeResponse, null);
+            return typeResponse;
         }
 
         FtpResponseWithSocket pasvResponse = getPassiveSocket();
         Socket socket = pasvResponse.getSocket();
         if(socket == null) {
-            return new FtpTransferResponse(pasvResponse, null);
+            return pasvResponse;
         }
 
         FtpResponse response = execute("RETR " + filename);
         if(response.getStatus() != 150) {
-            return new FtpTransferResponse(response, null);
+            return response;
         }
 
-        byte[] output = readFromSocket(socket);
+        readFromSocket(socket, output);
 
         response = readResponse();
-        return new FtpTransferResponse(response, output);
+        return response;
     }
 
     public FtpResponse stor(String filename, InputStream input) throws IOException {
@@ -188,9 +188,8 @@ public class FtpClient {
         return new FtpResponseWithSocket(response, socket);
     }
 
-    private byte[] readFromSocket(Socket socket) throws IOException {
+    private void readFromSocket(Socket socket, OutputStream output) throws IOException {
         InputStream input = socket.getInputStream();
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
 
         byte[] buffer = new byte[BUFFER_SIZE];
         int read;
@@ -200,8 +199,6 @@ public class FtpClient {
         }
 
         socket.close();
-
-        return output.toByteArray();
     }
 
     private void writeToSocket(Socket socket, InputStream input) throws IOException {
