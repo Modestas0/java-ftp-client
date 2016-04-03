@@ -220,6 +220,6 @@ public class FtpClient {
     }
 
     private void debug(String text) {
-        System.out.println(text);
+        // System.out.println(text);
     }
 }
