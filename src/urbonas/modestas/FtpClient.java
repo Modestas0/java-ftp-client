@@ -20,6 +20,10 @@ public class FtpClient {
         this.writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
     }
 
+    public boolean isRunning() {
+        return !socket.isClosed();
+    }
+
     public void close() throws IOException {
         writer.close();
         reader.close();
@@ -130,7 +134,9 @@ public class FtpClient {
     }
 
     public FtpResponse quit() throws IOException {
-        return execute("QUIT");
+        FtpResponse response = execute("QUIT");
+        close();
+        return response;
     }
 
     public FtpResponse execute(String command) throws IOException {
