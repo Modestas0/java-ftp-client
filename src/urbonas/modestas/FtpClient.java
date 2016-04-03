@@ -12,10 +12,19 @@ public class FtpClient {
     private final BufferedReader reader;
     private final PrintWriter writer;
 
+    private static final boolean DEBUG = true;
+    private static final int BUFFER_SIZE = 1024;
+
     public FtpClient(String host, int port) throws IOException {
         this.socket = new Socket(host, port);
         this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+    }
+
+    public void close() throws IOException {
+        writer.close();
+        reader.close();
+        socket.close();
     }
 
     public FtpResponse getWelcomeMessage() throws IOException {
@@ -54,11 +63,31 @@ public class FtpClient {
         return execute("SIZE " + file);
     }
 
+    public FtpTransferResponse list() throws IOException {
+        FtpResponseWithSocket pasvResponse = getPassiveSocket();
+        if(pasvResponse.getSocket() == null) {
+            return new FtpTransferResponse(pasvResponse, null);
+        }
+
+        Socket socket = pasvResponse.getSocket();
+
+        FtpResponse response = execute("LIST");
+        if(response.getStatus() != 150) {
+            return new FtpTransferResponse(response, null);
+        }
+
+        byte[] output = readFromSocket(socket);
+
+        response = readResponse();
+        return new FtpTransferResponse(response, output);
+    }
+
     public FtpResponse quit() throws IOException {
         return execute("QUIT");
     }
 
     public FtpResponse execute(String command) throws IOException {
+        debug("Executing \"" + command + "\"");
         writer.write(command + "\r\n");
         writer.flush();
         return readResponse();
@@ -74,6 +103,7 @@ public class FtpClient {
         // page 36
         do {
             line = reader.readLine();
+            debug("Response: " + line);
             if(line.matches("^[0-9]{3}[ -].*")) {
                 status = Integer.valueOf(line.substring(0, 3));
                 messages.add(line.substring(4));
@@ -99,11 +129,41 @@ public class FtpClient {
 
         Pattern pattern = Pattern.compile("([0-9]+),([0-9]+),([0-9]+),([0-9]+),([0-9]+),([0-9]+)");
         Matcher matcher = pattern.matcher(response.getJoinedMessages());
+        if(!matcher.find() || matcher.groupCount() != 6) {
+            throw new RuntimeException("Could not parse PASV output: " + response.getJoinedMessages());
+        }
+
         String ip = matcher.group(1) + "." + matcher.group(2) + "."
                 + matcher.group(3) + "." + matcher.group(4);
 
         int port = Integer.valueOf(matcher.group(5)) * 0x100 + Integer.valueOf(matcher.group(6));
         Socket socket = new Socket(ip, port);
         return new FtpResponseWithSocket(response, socket);
+    }
+
+    private byte[] readFromSocket(Socket socket) throws IOException {
+        InputStream input = socket.getInputStream();
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int read;
+
+        while((read = input.read(buffer)) >= 0) {
+            output.write(buffer, 0, read);
+        }
+
+        socket.close();
+
+        return output.toByteArray();
+    }
+
+    private void writeToSocket(Socket socket, byte[] data) throws IOException {
+        OutputStream output = socket.getOutputStream();
+        output.write(data);
+        socket.close();
+    }
+
+    private void debug(String text) {
+        System.out.println(text);
     }
 }
