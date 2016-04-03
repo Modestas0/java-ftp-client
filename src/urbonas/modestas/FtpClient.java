@@ -64,13 +64,35 @@ public class FtpClient {
 
     public FtpTransferResponse list() throws IOException {
         FtpResponseWithSocket pasvResponse = getPassiveSocket();
-        if(pasvResponse.getSocket() == null) {
+        Socket socket = pasvResponse.getSocket();
+        if(socket == null) {
             return new FtpTransferResponse(pasvResponse, null);
         }
 
-        Socket socket = pasvResponse.getSocket();
-
         FtpResponse response = execute("LIST");
+        if(response.getStatus() != 150) {
+            return new FtpTransferResponse(response, null);
+        }
+
+        byte[] output = readFromSocket(socket);
+
+        response = readResponse();
+        return new FtpTransferResponse(response, output);
+    }
+
+    public FtpTransferResponse retr(String path) throws IOException {
+        FtpResponse typeResponse = execute("TYPE I");
+        if(typeResponse.getStatus() != 200) {
+            return new FtpTransferResponse(typeResponse, null);
+        }
+
+        FtpResponseWithSocket pasvResponse = getPassiveSocket();
+        Socket socket = pasvResponse.getSocket();
+        if(socket == null) {
+            return new FtpTransferResponse(pasvResponse, null);
+        }
+
+        FtpResponse response = execute("RETR " + path);
         if(response.getStatus() != 150) {
             return new FtpTransferResponse(response, null);
         }
