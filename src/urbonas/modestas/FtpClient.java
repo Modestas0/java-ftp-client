@@ -103,7 +103,7 @@ public class FtpClient {
         return new FtpTransferResponse(response, output);
     }
 
-    public FtpResponse stor(String filename, byte[] bytes) throws IOException {
+    public FtpResponse stor(String filename, InputStream input) throws IOException {
         FtpResponse typeResponse = execute("TYPE I");
         if(typeResponse.getStatus() != 200) {
             return typeResponse;
@@ -120,7 +120,7 @@ public class FtpClient {
             return response;
         }
 
-        writeToSocket(socket, bytes);
+        writeToSocket(socket, input);
 
         return readResponse();
     }
@@ -204,9 +204,15 @@ public class FtpClient {
         return output.toByteArray();
     }
 
-    private void writeToSocket(Socket socket, byte[] data) throws IOException {
+    private void writeToSocket(Socket socket, InputStream input) throws IOException {
         OutputStream output = socket.getOutputStream();
-        output.write(data);
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int read;
+
+        while((read = input.read(buffer)) >= 0) {
+            output.write(buffer, 0, read);
+        }
+
         socket.close();
     }
 
