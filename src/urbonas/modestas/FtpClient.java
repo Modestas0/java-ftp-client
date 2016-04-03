@@ -125,6 +125,10 @@ public class FtpClient {
         return readResponse();
     }
 
+    public FtpResponse dele(String filename) throws IOException {
+        return execute("DELE " + filename);
+    }
+
     public FtpResponse quit() throws IOException {
         return execute("QUIT");
     }
