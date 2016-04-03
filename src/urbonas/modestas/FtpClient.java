@@ -12,7 +12,6 @@ public class FtpClient {
     private final BufferedReader reader;
     private final PrintWriter writer;
 
-    private static final boolean DEBUG = true;
     private static final int BUFFER_SIZE = 1024;
 
     public FtpClient(String host, int port) throws IOException {
