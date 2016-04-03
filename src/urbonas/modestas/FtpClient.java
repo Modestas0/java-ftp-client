@@ -80,7 +80,7 @@ public class FtpClient {
         return new FtpTransferResponse(response, output);
     }
 
-    public FtpTransferResponse retr(String path) throws IOException {
+    public FtpTransferResponse retr(String filename) throws IOException {
         FtpResponse typeResponse = execute("TYPE I");
         if(typeResponse.getStatus() != 200) {
             return new FtpTransferResponse(typeResponse, null);
@@ -92,7 +92,7 @@ public class FtpClient {
             return new FtpTransferResponse(pasvResponse, null);
         }
 
-        FtpResponse response = execute("RETR " + path);
+        FtpResponse response = execute("RETR " + filename);
         if(response.getStatus() != 150) {
             return new FtpTransferResponse(response, null);
         }
@@ -101,6 +101,28 @@ public class FtpClient {
 
         response = readResponse();
         return new FtpTransferResponse(response, output);
+    }
+
+    public FtpResponse stor(String filename, byte[] bytes) throws IOException {
+        FtpResponse typeResponse = execute("TYPE I");
+        if(typeResponse.getStatus() != 200) {
+            return typeResponse;
+        }
+
+        FtpResponseWithSocket pasvResponse = getPassiveSocket();
+        Socket socket = pasvResponse.getSocket();
+        if(socket == null) {
+            return pasvResponse;
+        }
+
+        FtpResponse response = execute("STOR " + filename);
+        if(response.getStatus() != 150) {
+            return response;
+        }
+
+        writeToSocket(socket, bytes);
+
+        return readResponse();
     }
 
     public FtpResponse quit() throws IOException {
